@@ -1,6 +1,6 @@
 const Module = require('../models/Module');
 const Post = require('../models/Post');
-const University = require('../models/University');
+const Category = require('../models/Category');
 const Request = require('../models/Request');
 const User = require('../models/User');
 
@@ -23,7 +23,7 @@ const findModuleyById = async (id) => {
   return new Promise((resolve, reject) => {
     Module.findOne({ _id: id })
       .select(
-        '_id name title description posts followers university uniAcronym'
+        '_id name title description posts followers category uniAcronym'
       )
       .then((mod) => {
         if (!mod) {
@@ -39,9 +39,9 @@ const findModuleyById = async (id) => {
 /* Finds module by Id */
 const findModuleyByName = async (name, uni) => {
   return new Promise((resolve, reject) => {
-    Module.findOne({ name: name, university: uni })
+    Module.findOne({ name: name, category: uni })
       .select(
-        '_id name title description posts followers university uniAcronym'
+        '_id name title description posts followers category uniAcronym'
       )
       .then((mod) => {
         resolve(mod);
@@ -90,11 +90,11 @@ const findPostById = async (postId) => {
  */
 const findUniversityById = async (uniId) => {
   return new Promise((resolve, reject) => {
-    University.findOne({ _id: uniId })
+    Category.findOne({ _id: uniId })
       .select('_id name acronym modules')
       .then((uni) => {
         if (!uni) {
-          reject(buildErrObject(422, 'University does not exist'));
+          reject(buildErrObject(422, 'Category does not exist'));
         } else {
           resolve(uni); // returns mongoose object
         }
@@ -109,11 +109,11 @@ const findUniversityById = async (uniId) => {
  */
 const findUniversityByAcronym = async (acronym) => {
   return new Promise((resolve, reject) => {
-    University.findOne({ acronym: acronym })
+    Category.findOne({ acronym: acronym })
       .select('_id name modules')
       .then((uni) => {
         if (!uni) {
-          reject(buildErrObject(422, 'University does not exist'));
+          reject(buildErrObject(422, 'Category does not exist'));
         } else {
           resolve(uni); // returns mongoose object
         }
@@ -139,7 +139,7 @@ const sortedModule = async () => {
 const findRequestById = async (id) => {
   return new Promise((resolve, reject) => {
     Request.findOne({ _id: id })
-      .select('_id university module counter')
+      .select('_id category module counter')
       .then((request) => {
         if (!request) {
           reject(buildErrObject(422, 'Request does not exist'));
@@ -178,7 +178,7 @@ exports.createModule = async (req, res) => {
       name: req.body.module.name,
       title: req.body.module.title,
       description: req.body.module.description,
-      university: req.body.module.university,
+      category: req.body.module.category,
       nOfFollowers: 0,
     });
 
@@ -192,7 +192,7 @@ exports.createModule = async (req, res) => {
       notif.createNotification(data, user, admin);
     }
 
-    const uni = await findUniversityById(newModule.university);
+    const uni = await findUniversityById(newModule.category);
     const checkMod = await findModuleyByName(newModule.name, uni._id);
     if (checkMod) {
       handleError(res, buildErrObject(422, 'Module already exists!'));
@@ -224,7 +224,7 @@ exports.deleteModule = async (req, res) => {
 exports.getModuleInfo = async (req, res) => {
   try {
     let mod = await findModuleyById(req.params.moduleId);
-    const uni = await findUniversityById(mod.university);
+    const uni = await findUniversityById(mod.category);
 
     mod = {
       ...mod._doc,

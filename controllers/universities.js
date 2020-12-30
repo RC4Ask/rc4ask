@@ -1,4 +1,4 @@
-const University = require('../models/University');
+const Category = require('../models/Category');
 const Module = require('../models/Module');
 
 const {
@@ -15,10 +15,10 @@ const {
 /* Finds university by name  */
 const findUniversityByName = async (name) => {
   return new Promise((resolve, reject) => {
-    University.findOne({ acronym: name })
+    Category.findOne({ acronym: name })
       .then((uni) => {
         if (!uni) {
-          reject(buildErrObject(422, 'University does not exist'));
+          reject(buildErrObject(422, 'Category does not exist'));
         } else {
           resolve(uni); // returns mongoose object
         }
@@ -32,21 +32,21 @@ const findUniversityByName = async (name) => {
  ********************/
 
 exports.getUniInfoAcronym = async (req, res) => {
-  University.findOne({ acronym: req.params.uniAcronym })
+  Category.findOne({ acronym: req.params.uniAcronym })
     .lean()
     .then((uni) => {
       if (uni) handleSuccess(res, buildSuccObject(uni));
-      else handleError(res, buildErrObject(422, 'University not found'));
+      else handleError(res, buildErrObject(422, 'Category not found'));
     })
     .catch((err) => handleError(res, buildErrObject(422, err.message)));
 };
 
 exports.getUniInfoName = async (req, res) => {
-  University.findOne({ name: req.params.uniName })
+  Category.findOne({ name: req.params.uniName })
     .lean()
     .then((uni) => {
       if (uni) handleSuccess(res, buildSuccObject(uni));
-      else handleError(res, buildErrObject(422, 'University not found'));
+      else handleError(res, buildErrObject(422, 'Category not found'));
     })
     .catch((err) => handleError(res, buildErrObject(422, err.message)));
 };
@@ -54,9 +54,9 @@ exports.getUniInfoName = async (req, res) => {
 exports.getModuleList = async (req, res) => {
   try {
     const uni = await findUniversityByName(req.params.uniName);
-    Module.find({ university: uni._id })
+    Module.find({ category: uni._id })
       .select(
-        '_id name title description posts followers university uniAcronym'
+        '_id name title description posts followers category uniAcronym'
       )
       .sort({ name: 1 })
       .lean()
@@ -70,39 +70,39 @@ exports.getModuleList = async (req, res) => {
 };
 
 exports.createUni = async (req, res) => {
-  var newUni = new University({
-    name: req.body.university.name,
-    acronym: req.body.university.acronym,
-    overview: req.body.university.overview,
-    website: req.body.university.website,
-    logo: req.body.university.logo,
+  var newUni = new Category({
+    name: req.body.category.name,
+    acronym: req.body.category.acronym,
+    overview: req.body.category.overview,
+    website: req.body.category.website,
+    logo: req.body.category.logo,
   });
 
   newUni
     .save()
     .then((uni) =>
-      handleSuccess(res, buildSuccObject('New university created'))
+      handleSuccess(res, buildSuccObject('New category created'))
     )
     .catch((error) => handleError(res, buildErrObject(422, error.message)));
 };
 
 exports.deleteUni = async (req, res) => {
-  University.deleteOne({ _id: req.body.uniId })
+  Category.deleteOne({ _id: req.body.uniId })
     .then((result) => {
-      if (result.n) handleSuccess(res, buildSuccObject('University deleted'));
-      else handleError(res, buildErrObject(422, 'University not found'));
+      if (result.n) handleSuccess(res, buildSuccObject('Category deleted'));
+      else handleError(res, buildErrObject(422, 'Category not found'));
     })
     .catch((error) => handleError(res, buildErrObject(422, error.message)));
 };
 
 exports.updateUni = async (req, res) => {
-  University.updateOne({ _id: req.params.uniId }, req.body.university)
+  Category.updateOne({ _id: req.params.uniId }, req.body.category)
     .then((result) => {
       if (result.n) {
         if (result.nModified)
-          handleSuccess(res, buildSuccObject('University updated'));
+          handleSuccess(res, buildSuccObject('Category updated'));
         else handleError(res, buildErrObject(422, 'No changes made'));
-      } else handleError(res, buildErrObject(422, 'University not found'));
+      } else handleError(res, buildErrObject(422, 'Category not found'));
     })
     .catch((error) => handleError(res, buildErrObject(422, error.message)));
 };
@@ -112,7 +112,7 @@ exports.addModule = async (req, res) => {
     const uni = await findUniversityByName(req.params.uniName);
     const moduleId = req.body.moduleId;
     if (!uni) {
-      handleError(res, buildErrObject(409, 'University not found'));
+      handleError(res, buildErrObject(409, 'Category not found'));
       return;
     }
 
@@ -157,5 +157,3 @@ exports.deleteModule = async (req, res) => {
     handleError(res, buildErrObject(422, err.message));
   }
 };
-
-exports.get
