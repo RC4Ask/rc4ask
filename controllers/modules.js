@@ -23,7 +23,7 @@ const findModuleyById = async (id) => {
   return new Promise((resolve, reject) => {
     Module.findOne({ _id: id })
       .select(
-        '_id name title description posts followers category uniAcronym'
+        '_id name title description posts followers category categoryAcronym'
       )
       .then((mod) => {
         if (!mod) {
@@ -41,7 +41,7 @@ const findModuleyByName = async (name, uni) => {
   return new Promise((resolve, reject) => {
     Module.findOne({ name: name, category: uni })
       .select(
-        '_id name title description posts followers category uniAcronym'
+        '_id name title description posts followers category categoryAcronym'
       )
       .then((mod) => {
         resolve(mod);
@@ -199,7 +199,7 @@ exports.createModule = async (req, res) => {
       return;
     }
 
-    newModule.uniAcronym = uni.acronym;
+    newModule.categoryAcronym = uni.acronym;
     uni.modules.push(newModule._id);
 
     uni.save();
@@ -239,7 +239,7 @@ exports.getModuleInfo = async (req, res) => {
 
 exports.getModuleInfoFromAcronym = async (req, res) => {
   try {
-    const uni = await findUniversityByAcronym(req.params.uniAcronym);
+    const uni = await findUniversityByAcronym(req.params.categoryAcronym);
     const temp = [];
     for (i = 0; i < uni.modules.length; i++) {
       const mod = await findModuleyById(uni.modules[i]);

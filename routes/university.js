@@ -9,7 +9,7 @@ const router = express.Router()
  * Get particular university info
  */
 router.get(
-  '/:uniAcronym',
+  '/:categoryAcronym',
   UniversityController.getUniInfoAcronym
 )
 
@@ -17,7 +17,7 @@ router.get(
  * Get particular university info
  */
 router.get(
-  '/name/:uniName',
+  '/name/:categoryName',
   UniversityController.getUniInfoName
 )
 
@@ -45,7 +45,7 @@ router.delete(
  * Retrieves all modules in that university
  */
 router.get(
-  '/modules/:uniName',
+  '/modules/:categoryName',
   UniversityController.getModuleList
 );
 
@@ -53,7 +53,7 @@ router.get(
  * Get module info from acronym and module name
  */
 router.get(
-  '/modules/:uniAcronym/:moduleName',
+  '/modules/:categoryAcronym/:moduleName',
   ModuleController.getModuleInfoFromAcronym
 );
 
@@ -61,7 +61,7 @@ router.get(
  * Add module to array route
  */
 router.put(
-  '/modules/add/:uniName',
+  '/modules/add/:categoryName',
   UniversityController.addModule
 )
 
@@ -69,7 +69,7 @@ router.put(
  * Delete module from array route
  */
 router.put(
-  '/modules/delete/:uniName',
+  '/modules/delete/:categoryName',
   UniversityController.deleteModule
 )
 

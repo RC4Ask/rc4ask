@@ -52,7 +52,7 @@ const findModuleyById = async (id) => {
 const findPostById = async (id) => {
   return new Promise((resolve, reject) => {
     Post.findOne({ _id: id })
-      .select('_id text author title module moduleName authorName upvote downvote comments avatar uniName uniAcronym nOfUpvote')
+      .select('_id text author title module moduleName authorName upvote downvote comments avatar categoryName categoryAcronym nOfUpvote')
       .then(post => {
         if (!post) {
           reject(buildErrObject(422, 'Post does not exist'));
@@ -182,8 +182,8 @@ exports.createPost = async (req, res) => {
     newPost.authorName = author.name;
     newPost.moduleName = mod.name;
     newPost.avatar = author.avatar;
-    newPost.uniName = uni.name;
-    newPost.uniAcronym = uni.acronym;
+    newPost.categoryName = uni.name;
+    newPost.categoryAcronym = uni.acronym;
     mod.posts.unshift(newPost._id);
 
     mod.save();

@@ -89,7 +89,7 @@ exports.createUniAndModule = async (req, res) => {
       notif.createNotification(data, user, admin)
     }
 
-    newModule.uniAcronym = newUni.acronym
+    newModule.categoryAcronym = newUni.acronym
     newUni.modules.push(newModule._id)
     newUni.save()
     newModule.save()

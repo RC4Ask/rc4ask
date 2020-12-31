@@ -37,7 +37,7 @@ const ModuleSchema = new mongoose.Schema(
       ref: 'Category',
       required: true
     },
-    uniAcronym: {
+    categoryAcronym: {
       type: String
     }
   }
