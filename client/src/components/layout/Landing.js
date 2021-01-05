@@ -16,10 +16,10 @@ const Landing = ({ isAuthenticated }) => {
             <img className="large-image" src={logo} alt="ladybug"></img>
           </h1>
           <p className="ui center aligned lead">
-            Ask questions, discuss, and get help from other students worldwide.
+            Ask questions, discuss, and get help from other students.
           </p>
           <div className="ui row">
-            <Link to="/register" className="ui big negative button">
+            <Link to="/register" className="ui big teal button">
               <i className="signup icon"></i>
               Register
             </Link>

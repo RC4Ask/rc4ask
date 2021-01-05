@@ -62,7 +62,7 @@ const Profile = ({
     },
     countLabel: 'Level',
     discreteDomains: 0, // default: 1
-    colors: ['#ebedf0', '#e8c4ba', '#d88f7d', '#c95b40', '#b82601'],
+    colors: ['#ebedf0', '#5DE1E1', '#00A8A8', '#0d8d8d', '#005e5e'],
   });
 
   const statistics = profile.contributionsId && (
