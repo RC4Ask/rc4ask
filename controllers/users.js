@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const Module = require('../models/Module')
-const University = require('../models/University');
+const Category = require('../models/Category');
 const Post = require('../models/Post')
 
 const {
@@ -90,7 +90,7 @@ const modulesFromUni = async (userId) => {
     const user = await findUserById(userId)
     var temp = []
 
-    University.find()
+    Category.find()
     .select('name modules acronym').sort({name: 1})
     .lean()
     .then(universityList => {

@@ -62,10 +62,10 @@ const PostSchema = new mongoose.Schema(
     avatar: {
       type: String
     }, 
-    uniName: {
+    categoryName: {
       type: String
     },
-    uniAcronym: {
+    categoryAcronym: {
       type: String
     },
     date: {

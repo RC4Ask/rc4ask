@@ -1,7 +1,7 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Module = require('../models/Module');
-const University = require('../models/University');
+const Category = require('../models/Category');
 
 const notif = require('../middleware/notification')
 const {
@@ -36,7 +36,7 @@ const findUserById = async (id) => {
 const findModuleyById = async (id) => {
   return new Promise((resolve, reject) => {
     Module.findOne({ _id: id })
-      .select('_id name posts university')
+      .select('_id name posts category')
       .then((mod) => {
         if (!mod) {
           reject(buildErrObject(422, 'Module does not exist'));
@@ -52,7 +52,7 @@ const findModuleyById = async (id) => {
 const findPostById = async (id) => {
   return new Promise((resolve, reject) => {
     Post.findOne({ _id: id })
-      .select('_id text author title module moduleName authorName upvote downvote comments avatar uniName uniAcronym nOfUpvote')
+      .select('_id text author title module moduleName authorName upvote downvote comments avatar categoryName categoryAcronym nOfUpvote')
       .then(post => {
         if (!post) {
           reject(buildErrObject(422, 'Post does not exist'));
@@ -79,11 +79,11 @@ const deletePostFromDb = async (id) => {
 /* Finds university by name  */
 const findUniversityById = async (id) => {
   return new Promise((resolve, reject) => {
-    University.findOne({ _id: id })
+    Category.findOne({ _id: id })
       .select('name modules _id acronym')
       .then((uni) => {
         if (!uni) {
-          reject(buildErrObject(422, 'University does not exist'));
+          reject(buildErrObject(422, 'Category does not exist'));
         } else {
           resolve(uni); // returns mongoose object
         }
@@ -155,7 +155,7 @@ exports.createPost = async (req, res) => {
 
     const author = await findUserById(newPost.author);
     const mod = await findModuleyById(newPost.module);
-    const uni = await findUniversityById(mod.university);
+    const uni = await findUniversityById(mod.category);
 
     const date = roundDate(new Date())
     if (author.contributions) {
@@ -182,8 +182,8 @@ exports.createPost = async (req, res) => {
     newPost.authorName = author.name;
     newPost.moduleName = mod.name;
     newPost.avatar = author.avatar;
-    newPost.uniName = uni.name;
-    newPost.uniAcronym = uni.acronym;
+    newPost.categoryName = uni.name;
+    newPost.categoryAcronym = uni.acronym;
     mod.posts.unshift(newPost._id);
 
     mod.save();

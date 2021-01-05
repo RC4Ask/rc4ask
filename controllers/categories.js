@@ -1,4 +1,4 @@
-const University = require('../models/University')
+const Category = require('../models/Category')
 const Module = require('../models/Module')
 const User = require('../models/User')
 
@@ -18,7 +18,7 @@ const {
 const findRequestById = async (id) => {
   return new Promise((resolve, reject) => {
     Request.findOne({ _id: id })
-      .select('_id university module counter')
+      .select('_id category module counter')
       .then(request => {
         if (!request) {
           reject(buildErrObject(422, 'Request does not exist'));
@@ -51,7 +51,7 @@ const findUserById = async id => {
  ********************/
 
 exports.getUniversityList = async (req, res) => {
-  University.find()
+  Category.find()
     .select('name modules acronym').sort({name: 1})
     .lean()
     .then(universityList => handleSuccess(res, buildSuccObject(universityList)))
@@ -63,19 +63,19 @@ exports.createUniAndModule = async (req, res) => {
     const request = await findRequestById(req.body.request)
     const admin = req.body._id
 
-    var newUni = new University({
-      name: req.body.university.name,
-      acronym: req.body.university.acronym,
-      overview: req.body.university.overview,
-      website: req.body.university.website,
-      logo: req.body.university.logo,
+    var newUni = new Category({
+      name: req.body.category.name,
+      acronym: req.body.category.acronym,
+      overview: req.body.category.overview,
+      website: req.body.category.website,
+      logo: req.body.category.logo,
     });
 
     var newModule = new Module({
       name: req.body.module.name,
       title: req.body.module.title,
       description: req.body.module.description,
-      university: newUni._id,
+      category: newUni._id,
       nOfFollowers: 0
     });
     
@@ -89,11 +89,11 @@ exports.createUniAndModule = async (req, res) => {
       notif.createNotification(data, user, admin)
     }
 
-    newModule.uniAcronym = newUni.acronym
+    newModule.categoryAcronym = newUni.acronym
     newUni.modules.push(newModule._id)
     newUni.save()
     newModule.save()
-    handleSuccess(res, buildSuccObject('University and Module created'))
+    handleSuccess(res, buildSuccObject('Category and Module created'))
   } catch (err) {
     handleError(res, buildErrObject(422, err.message));
   }

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const UniversitySchema = new mongoose.Schema(
+const CategorySchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -32,4 +32,4 @@ const UniversitySchema = new mongoose.Schema(
   }
 )
 
-module.exports = mongoose.model('University', UniversitySchema)
+module.exports = mongoose.model('Category', CategorySchema)

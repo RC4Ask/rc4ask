@@ -16,7 +16,7 @@ const {
 const findRequestById = async (id) => {
   return new Promise((resolve, reject) => {
     Request.findOne({ _id: id })
-      .select('_id university module counter')
+      .select('_id category module counter')
       .then(request => {
         if (!request) {
           reject(buildErrObject(422, 'Request does not exist'));
@@ -28,11 +28,11 @@ const findRequestById = async (id) => {
   });
 };
 
-/* Finds request by university and module*/
+/* Finds request by category and module*/
 const findRequestByUniAndMod = async (uni, mod) => {
   return new Promise((resolve, reject) => {
-    Request.findOne({ university: uni, module: mod })
-      .select('_id university module counter')
+    Request.findOne({ category: uni, module: mod })
+      .select('_id category module counter')
       .then(request => {
         resolve(request)
       })
@@ -71,7 +71,7 @@ const sortedRequest = async () => {
 
 exports.createRequest = async (req, res) => {
    try {
-    const uni = req.body.university
+    const uni = req.body.category
     const mod = req.body.module
     const userId = req.body._id
     const existingRequest = await findRequestByUniAndMod(uni, mod)
@@ -86,7 +86,7 @@ exports.createRequest = async (req, res) => {
       }
     } else {
       var newRequest = new Request({
-        university: uni,
+        category: uni,
         module: mod,
         date: Date.now()
       })

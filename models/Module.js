@@ -32,12 +32,12 @@ const ModuleSchema = new mongoose.Schema(
     nOfFollowers: {
       type: Number
     },
-    university: {
+    category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'University',
+      ref: 'Category',
       required: true
     },
-    uniAcronym: {
+    categoryAcronym: {
       type: String
     }
   }

@@ -287,7 +287,7 @@ const verifyUser = async (user) => {
 const findPostById = async (id) => {
   return new Promise((resolve, reject) => {
     Post.findOne({ _id: id })
-      .select('_id text title module author moduleName authorName upvote downvote comments avatar uniName uniAcronym nOfUpvote')
+      .select('_id text title module author moduleName authorName upvote downvote comments avatar categoryName categoryAcronym nOfUpvote')
       .then(post => {
         if (!post) {
           reject(buildErrObject(422, 'Post does not exist'));

@@ -1,4 +1,4 @@
-const University = require('../models/University');
+const Category = require('../models/Category');
 const Module = require('../models/Module');
 
 const {
@@ -12,15 +12,15 @@ const {
  * Private functions *
  *********************/
 
-/* Finds university by name  */
-const findUniversityByName = async (name) => {
+/* Finds category by name  */
+const findCategoryByName = async (name) => {
   return new Promise((resolve, reject) => {
-    University.findOne({ acronym: name })
-      .then((uni) => {
-        if (!uni) {
-          reject(buildErrObject(422, 'University does not exist'));
+    Category.findOne({ acronym: name })
+      .then((category) => {
+        if (!category) {
+          reject(buildErrObject(422, 'Category does not exist'));
         } else {
-          resolve(uni); // returns mongoose object
+          resolve(category); // returns mongoose object
         }
       })
       .catch((err) => reject(buildErrObject(422, err.message)));
@@ -32,31 +32,31 @@ const findUniversityByName = async (name) => {
  ********************/
 
 exports.getUniInfoAcronym = async (req, res) => {
-  University.findOne({ acronym: req.params.uniAcronym })
+  Category.findOne({ acronym: req.params.categoryAcronym })
     .lean()
     .then((uni) => {
       if (uni) handleSuccess(res, buildSuccObject(uni));
-      else handleError(res, buildErrObject(422, 'University not found'));
+      else handleError(res, buildErrObject(422, 'Category not found'));
     })
     .catch((err) => handleError(res, buildErrObject(422, err.message)));
 };
 
 exports.getUniInfoName = async (req, res) => {
-  University.findOne({ name: req.params.uniName })
+  Category.findOne({ name: req.params.categoryName })
     .lean()
     .then((uni) => {
       if (uni) handleSuccess(res, buildSuccObject(uni));
-      else handleError(res, buildErrObject(422, 'University not found'));
+      else handleError(res, buildErrObject(422, 'Category not found'));
     })
     .catch((err) => handleError(res, buildErrObject(422, err.message)));
 };
 
 exports.getModuleList = async (req, res) => {
   try {
-    const uni = await findUniversityByName(req.params.uniName);
-    Module.find({ university: uni._id })
+    const category = await findCategoryByName(req.params.categoryName);
+    Module.find({ category: category._id })
       .select(
-        '_id name title description posts followers university uniAcronym'
+        '_id name title description posts followers category categoryAcronym'
       )
       .sort({ name: 1 })
       .lean()
@@ -70,61 +70,61 @@ exports.getModuleList = async (req, res) => {
 };
 
 exports.createUni = async (req, res) => {
-  var newUni = new University({
-    name: req.body.university.name,
-    acronym: req.body.university.acronym,
-    overview: req.body.university.overview,
-    website: req.body.university.website,
-    logo: req.body.university.logo,
+  var newCategory = new Category({
+    name: req.body.name,
+    acronym: req.body.acronym,
+    overview: req.body.overview,
+    website: req.body.website,
+    logo: req.body.logo,
   });
 
-  newUni
+  newCategory
     .save()
-    .then((uni) =>
-      handleSuccess(res, buildSuccObject('New university created'))
+    .then((category) =>
+      handleSuccess(res, buildSuccObject('New category created'))
     )
     .catch((error) => handleError(res, buildErrObject(422, error.message)));
 };
 
 exports.deleteUni = async (req, res) => {
-  University.deleteOne({ _id: req.body.uniId })
+  Category.deleteOne({ _id: req.body.uniId })
     .then((result) => {
-      if (result.n) handleSuccess(res, buildSuccObject('University deleted'));
-      else handleError(res, buildErrObject(422, 'University not found'));
+      if (result.n) handleSuccess(res, buildSuccObject('Category deleted'));
+      else handleError(res, buildErrObject(422, 'Category not found'));
     })
     .catch((error) => handleError(res, buildErrObject(422, error.message)));
 };
 
 exports.updateUni = async (req, res) => {
-  University.updateOne({ _id: req.params.uniId }, req.body.university)
+  Category.updateOne({ _id: req.params.uniId }, req.body.category)
     .then((result) => {
       if (result.n) {
         if (result.nModified)
-          handleSuccess(res, buildSuccObject('University updated'));
+          handleSuccess(res, buildSuccObject('Category updated'));
         else handleError(res, buildErrObject(422, 'No changes made'));
-      } else handleError(res, buildErrObject(422, 'University not found'));
+      } else handleError(res, buildErrObject(422, 'Category not found'));
     })
     .catch((error) => handleError(res, buildErrObject(422, error.message)));
 };
 
 exports.addModule = async (req, res) => {
   try {
-    const uni = await findUniversityByName(req.params.uniName);
+    const category = await findCategoryByName(req.params.categoryName);
     const moduleId = req.body.moduleId;
-    if (!uni) {
-      handleError(res, buildErrObject(409, 'University not found'));
+    if (!category) {
+      handleError(res, buildErrObject(409, 'Category not found'));
       return;
     }
 
-    if (uni.modules.indexOf(moduleId) === -1) {
-      uni.modules.push(moduleId);
+    if (category.modules.indexOf(moduleId) === -1) {
+      category.modules.push(moduleId);
     } else {
       handleError(res, buildErrObject(422, 'Module already exists'));
       return;
     }
 
-    uni.save();
-    handleSuccess(res, buildSuccObject('Module added to ' + uni.name));
+    category.save();
+    handleSuccess(res, buildSuccObject('Module added to ' + category.name));
   } catch (err) {
     handleError(res, buildErrObject(422, err.message));
   }
@@ -132,30 +132,28 @@ exports.addModule = async (req, res) => {
 
 exports.deleteModule = async (req, res) => {
   try {
-    const uni = await findUniversityByName(req.params.uniName);
+    const category = await findCategoryByName(req.params.categoryName);
     const moduleId = req.body.moduleId;
-    const uni_idx = uni.modules.indexOf(moduleId);
-    if (uni_idx > -1) {
+    const category_idx = category.modules.indexOf(moduleId);
+    if (category_idx > -1) {
       const temp = [];
-      uni.modules.forEach((element) => {
+      category.modules.forEach((element) => {
         if (element != moduleId) {
           temp.push(element);
         }
       });
-      uni.modules = temp;
+      category.modules = temp;
     } else {
       handleError(
         res,
-        buildErrObject(422, 'Module does not belong to ' + uni.name)
+        buildErrObject(422, 'Module does not belong to ' + category.name)
       );
       return;
     }
 
-    uni.save();
-    handleSuccess(res, buildSuccObject('Module removed from ' + uni.name));
+    category.save();
+    handleSuccess(res, buildSuccObject('Module removed from ' + category.name));
   } catch (err) {
     handleError(res, buildErrObject(422, err.message));
   }
 };
-
-exports.get
