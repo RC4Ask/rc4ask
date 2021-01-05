@@ -71,11 +71,11 @@ exports.getModuleList = async (req, res) => {
 
 exports.createUni = async (req, res) => {
   var newCategory = new Category({
-    name: req.body.category.name,
-    acronym: req.body.category.acronym,
-    overview: req.body.category.overview,
-    website: req.body.category.website,
-    logo: req.body.category.logo,
+    name: req.body.name,
+    acronym: req.body.acronym,
+    overview: req.body.overview,
+    website: req.body.website,
+    logo: req.body.logo,
   });
 
   newCategory
