@@ -131,7 +131,7 @@ const ChangeProfileModal = ({ setShowingPhoto, profile, changePicture }) => {
           max="2"
           step="0.01"
           defaultValue="1"
-          style={{ color: '#b82601' }}
+          style={{ color: '#00A8A8' }}
         />
       </div>
     </div>

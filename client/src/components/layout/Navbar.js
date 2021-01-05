@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import NotificationDropdown from '../notifications/NotificationsDropdown';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import logo from '../../img/logoweb.png';
+import logo from '../../img/name_white.png';
 import { logout } from '../../actions/auth';
 
 const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {

@@ -110,7 +110,7 @@
 /* Landing Page */
 .landing {
   position: relative;
-  background: url('./img/landing.jpg') no-repeat center center/cover;
+  background: url('./img/landing_page.jpg') no-repeat center center/cover;
   height: 100vh;
 }
 
@@ -128,7 +128,7 @@
 
 /* Overlay */
 .dark-overlay {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.55);
   position: absolute;
   top: 0;
   left: 0;
@@ -139,32 +139,32 @@
 /* Theme Color */
 
 .label.red-label {
-  background-color: #b82601;
+  background-color: #00a8a8;
   color: white;
 }
 
 .segment.red-segment {
-  background-color: #b82601;
+  background-color: #00a8a8;
   color: white;
 }
 
 .button.red-button {
-  background-color: #b82601;
+  background-color: #00a8a8;
   color: white;
 }
 
 .button.red-button:hover {
-  background-color: #aa2200;
+  background-color: #0d8d8d;
   color: white;
 }
 
 .button.red-button:focus {
-  background-color: #b82601;
+  background-color: #00a8a8;
   color: white;
 }
 
 .red-text {
-  color: #b82601;
+  color: #00a8a8;
 }
 
 .white-text {
@@ -214,7 +214,7 @@ input[type='range']:focus {
 
 input[type='range']::-webkit-slider-runnable-track {
   -webkit-appearance: none;
-  color: #b82601;
+  color: #00a8a8;
 }
 
 input[type='range']::-webkit-slider-thumb {
@@ -224,7 +224,7 @@ input[type='range']::-webkit-slider-thumb {
   width: 1em;
   cursor: pointer;
   background: #570000;
-  box-shadow: -87px 0 0 80px #b82601;
+  box-shadow: -87px 0 0 80px #00a8a8;
 }
 
 /* .hide-content {
@@ -263,11 +263,11 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 .red-link {
-  color: #b82601;
+  color: #00a8a8;
 }
 
 .red-link:hover {
-  color: #aa2200;
+  color: #0d8d8d;
 }
 
 .white-link {
@@ -286,6 +286,7 @@ input[type='range']::-webkit-slider-thumb {
 .red-background {
   background: url('./img/background.jpg') repeat center center/cover;
   /* background-color: #e74c3c; */
+  background: linear-gradient(#00a8a8, #0d8d8d);
   min-height: 100%;
   min-width: 100%;
   margin-top: 0rem;
@@ -299,12 +300,10 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 .picture-container {
-  /* background: url('./img/nuslogo.jpg') no-repeat center center/cover; */
   height: 40vh;
   width: 100%;
   overflow: hidden;
   position: relative;
-  /* border: 2px #b82601; */
 }
 
 .university-picture {
@@ -317,7 +316,7 @@ input[type='range']::-webkit-slider-thumb {
 
 /* Form */
 .form-center {
-  /* color: #b82601; */
+  /* color: #00A8A8; */
   height: 100%;
   width: 60%;
   margin: auto;

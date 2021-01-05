@@ -8,7 +8,7 @@ const ProfileTop = ({ user, profile, setShowingHeader }) => {
   return (
     <Fragment>
       <div className="ui segment">
-        <div className="ui grid" style={{ backgroundColor: '#b82601' }}>
+        <div className="ui grid" style={{ backgroundColor: '#00A8A8' }}>
           <div
             className="sixteen wide column center-text white-text"
             style={{ padding: '2rem' }}
