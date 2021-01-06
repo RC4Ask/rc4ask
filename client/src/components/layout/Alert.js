@@ -6,7 +6,7 @@ const Alert = ({ alerts }) =>
   alerts !== null &&
   alerts.length > 0 &&
   alerts.map((alert) => (
-    <div key={alert.id} className={`ui ${alert.alertType} message`}>
+    <div key={alert.id} className={`ui ${alert.alertType} message`} id="alert">
       {alert.msg}
     </div>
   ));
