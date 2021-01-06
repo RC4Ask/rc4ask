@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { followModule, unfollowModule } from '../../actions/module';
 
 const CategoryItem = ({
-  module: { _id, name, title, description, followers, uniAcronym },
+  module: { _id, name, title, description, followers, uniAcronym, logo},
   // university,
   auth: { user },
   followModule,
@@ -28,8 +28,8 @@ const CategoryItem = ({
   return (
     <div className="ui card" style={{ display: 'flex' }}>
       <div className="ui slide masked reveal image">
-        <div className="visible content module-picture">
-          <i className="code huge icon center-position" />
+        <div className="visible content">
+          <img src={logo} style={{maxHeight: "20vh",minHeight: "20vh", minWidth: '100%', backgroundPosition: "center"}}/>
         </div>
         <div className="hidden content">
           <p className="module-padding">{`${description}`}</p>
