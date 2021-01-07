@@ -12,7 +12,7 @@ exports.verifyRegistration = async response => {
       'ascii'
     );
 
-    const domain = process.env.NODE_ENV == "production" ? 'https://ask-ladybug.herokuapp.com' : 'http://localhost:3000'
+    const domain = process.env.NODE_ENV == "production" ? 'https://rc4ask.herokuapp.com' : 'http://localhost:3000'
     var verificationUrl =
       domain +
       '/verify' +
@@ -39,7 +39,7 @@ exports.forgotPassword = async (user, token) => {
       'ascii'
     );
 
-    const domain = process.env.NODE_ENV == "production" ? 'https://ask-ladybug.herokuapp.com' : 'http://localhost:3000'
+    const domain = process.env.NODE_ENV == "production" ? 'https://rc4ask.herokuapp.com' : 'http://localhost:3000'
     var forgotPasswordUrl = 
       domain +
       '/reset-password' +
