@@ -71,7 +71,7 @@ const PostsCategory = ({
         </div>
         <div className="twelve wide column">
           <div className="ui segment">
-            <h3>University:</h3>
+            <h3>Category:</h3>
             <Link to={`/${match.params.uni}`}>
               <p>{`${universityInfo.name}`}</p>
             </Link>

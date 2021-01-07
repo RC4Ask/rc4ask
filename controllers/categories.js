@@ -56,7 +56,7 @@ exports.getModuleList = async (req, res) => {
     const category = await findCategoryByName(req.params.categoryName);
     Module.find({ category: category._id })
       .select(
-        '_id name title description posts followers category categoryAcronym'
+        '_id name title description posts followers category categoryAcronym logo'
       )
       .sort({ name: 1 })
       .lean()

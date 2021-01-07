@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import { getFollowedModules } from '../../actions/module';
 import { addPost } from '../../actions/post';
-import { CKEditor, CKEditorContext } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor, CKEditorContext } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import ReactHtmlParser from 'react-html-parser';
 
 const PostFormModal = ({
   addPost,
@@ -33,9 +34,14 @@ const PostFormModal = ({
     setShowing(false);
   };
 
-  const onChange = (e, editor) => {
+  const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
+
+  // const handleTextEditor = (e, editor) => {
+  //   console.log(editor.getData());
+  //   setFormData({ ...formData, text: ReactHtmlParser(editor.getData()) });
+  // }
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -97,7 +103,7 @@ const PostFormModal = ({
         <div className="ui input">
           {/* <CKEditor 
             editor={ClassicEditor}
-            onChange={(e) => onChange(e)}
+            onChange={handleTextEditor}
           /> */}
           <textarea
             name="text"

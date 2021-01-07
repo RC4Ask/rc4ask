@@ -22,6 +22,7 @@
     "react-calendar-heatmap": "^1.8.1",
     "react-dom": "^16.13.1",
     "react-frappe-charts": "^2.1.0",
+    "react-html-parser": "^2.0.2",
     "react-leaf-carousel": "^2.0.3",
     "react-moment": "^0.9.7",
     "react-promise-tracker": "^2.1.0",
