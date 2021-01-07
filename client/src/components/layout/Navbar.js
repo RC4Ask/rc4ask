@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import NotificationDropdown from '../notifications/NotificationsDropdown';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import logo from '../../img/name_white.png';
+import logo from '../../img/logo_web.png';
+import logo_white from '../../img/logo_web_white.png';
 import { logout } from '../../actions/auth';
 
 const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
@@ -19,15 +20,16 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
   );
 
   return (
-    <div className="ui inverted fixed big menu navbar">
-      <div className="ui container">
-        <Link to="/" className="item">
-          <img className="ui middle aligned tiny image" src={logo}></img>
-        </Link>
-        {!loading && (
-          <Fragment>
-            {' '}
-            {isAuthenticated && user && user.verified ? (
+    !loading && (
+      <Fragment>
+        {' '}
+        {isAuthenticated && user && user.verified ? (
+          <div className="ui inverted fixed big menu navbar">
+            <div className="ui container">
+              <Link to="/" className="item">
+                <img className="ui middle aligned tiny image" src={logo}></img>
+              </Link>
+
               <div className="right menu ">
                 <Link to="/home" className="item">
                   Home
@@ -73,13 +75,20 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
             ) : (
-              guestLinks
+              <div className="ui inverted fixed big menu navbar" id="navbar-transparent">
+                <div className="ui container">
+                  <Link to="/" className="item" style={{border: "none"}}>
+                    <img className="ui middle aligned tiny image" src={logo_white}></img>
+                  </Link>
+                  {guestLinks}
+                </div>
+              </div>
             )}{' '}
           </Fragment>
-        )}
-      </div>
-    </div>
+        )
   );
 };
 

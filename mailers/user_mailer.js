@@ -19,7 +19,7 @@ exports.verifyRegistration = async response => {
       '/' + response.token
 
     const data = {
-      from: 'Ladybug <ladybug.officials@gmail.com>',
+      from: 'RC4Ask <rc4ask@gmail.com>',
       to: user.email,
       subject: 'Registration Confirmation',
       html: ejs.render(file, { user, verificationUrl })
@@ -46,7 +46,7 @@ exports.forgotPassword = async (user, token) => {
       '/' + token
 
     const data = {
-      from: 'Ladybug <ladybug.officials@gmail.com>',
+      from: 'RC4Ask <rc4ask@gmail.com>',
       to: user.email,
       subject: 'Forgot Password Request',
       html: ejs.render(file, { user, forgotPasswordUrl })
