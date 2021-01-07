@@ -5,10 +5,10 @@ const router = express.Router()
 router.use('/users', require('./user'))
 
 // Load Categories route
-router.use('/categories', require('./categories'))
+router.use('/categorylist', require('./categorylist'))
 
 // Load University route
-router.use('/universities', require('./university'));
+router.use('/categories', require('./categories'));
 
 // Load Module route
 router.use('/modules', require('./module'));

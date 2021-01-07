@@ -172,7 +172,7 @@ exports.getPostList = async (req, res) => {
 
 exports.createModule = async (req, res) => {
   try {
-    // const request = await findRequestById(req.body.request);
+    const request = await findRequestById(req.body.request);
     const admin = req.body._id;
     var newModule = new Module({
       name: req.body.module.name,
@@ -187,10 +187,10 @@ exports.createModule = async (req, res) => {
       action: newModule._id,
     };
 
-    // for (const element of request.counter) {
-      // const user = await findUserById(element);
-      // notif.createNotification(data, user, admin);
-    // }
+    for (const element of request.counter) {
+      const user = await findUserById(element);
+      notif.createNotification(data, user, admin);
+    }
 
     const uni = await findUniversityById(newModule.category);
     const checkMod = await findModuleyByName(newModule.name, uni._id);
