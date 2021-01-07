@@ -36,10 +36,10 @@ const CategoryFormModal = ({ setShowing, addRequest }) => {
   const [country, setCountry] = useState(null);
   const [uniList, setUniList] = useState([]);
   const [formData, setFormData] = useState({
-    university: '',
+    category: '',
     module: '',
   });
-  const { university, module } = formData;
+  const { category, module } = formData;
 
   const closeModalHandler = () => {
     setShowing(false);
@@ -80,26 +80,26 @@ const CategoryFormModal = ({ setShowing, addRequest }) => {
           onChange={(e, { value }) => {
             setCountry(value);
             setUniList([]);
-            setFormData({ ...formData, university: '' });
+            setFormData({ ...formData, category: '' });
           }}
           required
         />
       </div>
       <div className="field">
-        <label className="header">University</label>
+        <label className="header">Category</label>
         {/* <select name="category" className="ui selection dropdown">
           <option value="">Select a University</option>
           <option value="CS2040S">National University of Singapore</option>
           <option value="CS2030">Nanyang Technological University</option>
         </select> */}
         <Dropdown
-          placeholder="Select University"
+          placeholder="Select Category"
           fluid
           search
           selection
           options={uniOptions}
           onChange={(e, { value }) =>
-            setFormData({ ...formData, university: value })
+            setFormData({ ...formData, category: value })
           }
           required
         />

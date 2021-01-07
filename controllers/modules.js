@@ -37,9 +37,9 @@ const findModuleyById = async (id) => {
 };
 
 /* Finds module by Id */
-const findModuleyByName = async (name, uni) => {
+const findModuleyByName = async (name, category) => {
   return new Promise((resolve, reject) => {
-    Module.findOne({ name: name, category: uni })
+    Module.findOne({ name: name, category: category })
       .select(
         '_id name title description posts followers category categoryAcronym'
       )
@@ -85,18 +85,18 @@ const findPostById = async (postId) => {
 };
 
 /**
- * Finds university by ID
- * @param {string} id - universitiy's id
+ * Finds category by ID
+ * @param {string} id - category's id
  */
-const findUniversityById = async (uniId) => {
+const findCategoryById = async (categoryId) => {
   return new Promise((resolve, reject) => {
-    Category.findOne({ _id: uniId })
+    Category.findOne({ _id: categoryId })
       .select('_id name acronym modules')
-      .then((uni) => {
-        if (!uni) {
+      .then((category) => {
+        if (!category) {
           reject(buildErrObject(422, 'Category does not exist'));
         } else {
-          resolve(uni); // returns mongoose object
+          resolve(category); // returns mongoose object
         }
       })
       .catch((err) => reject(buildErrObject(422, err.message)));
@@ -104,18 +104,18 @@ const findUniversityById = async (uniId) => {
 };
 
 /**
- * Finds university by acronym
- * @param {string} id - universitiy's id
+ * Finds category by acronym
+ * @param {string} id - category's id
  */
-const findUniversityByAcronym = async (acronym) => {
+const findCategoryByAcronym = async (acronym) => {
   return new Promise((resolve, reject) => {
     Category.findOne({ acronym: acronym })
       .select('_id name modules')
-      .then((uni) => {
-        if (!uni) {
+      .then((category) => {
+        if (!category) {
           reject(buildErrObject(422, 'Category does not exist'));
         } else {
-          resolve(uni); // returns mongoose object
+          resolve(category); // returns mongoose object
         }
       })
       .catch((err) => reject(buildErrObject(422, err.message)));
@@ -192,17 +192,17 @@ exports.createModule = async (req, res) => {
       notif.createNotification(data, user, admin);
     }
 
-    const uni = await findUniversityById(newModule.category);
-    const checkMod = await findModuleyByName(newModule.name, uni._id);
+    const category = await findCategoryById(newModule.category);
+    const checkMod = await findModuleyByName(newModule.name, category._id);
     if (checkMod) {
       handleError(res, buildErrObject(422, 'Module already exists!'));
       return;
     }
 
-    newModule.categoryAcronym = uni.acronym;
-    uni.modules.push(newModule._id);
+    newModule.categoryAcronym = category.acronym;
+    category.modules.push(newModule._id);
 
-    uni.save();
+    category.save();
     newModule
       .save()
       .then((mod) => handleSuccess(res, buildSuccObject('New module created')))
@@ -224,11 +224,11 @@ exports.deleteModule = async (req, res) => {
 exports.getModuleInfo = async (req, res) => {
   try {
     let mod = await findModuleyById(req.params.moduleId);
-    const uni = await findUniversityById(mod.category);
+    const category = await findCategoryById(mod.category);
 
     mod = {
       ...mod._doc,
-      acronym: uni.acronym,
+      acronym: category.acronym,
     };
 
     handleSuccess(res, buildSuccObject(mod));
@@ -239,10 +239,10 @@ exports.getModuleInfo = async (req, res) => {
 
 exports.getModuleInfoFromAcronym = async (req, res) => {
   try {
-    const uni = await findUniversityByAcronym(req.params.categoryAcronym);
+    const category = await findCategoryByAcronym(req.params.categoryAcronym);
     const temp = [];
-    for (i = 0; i < uni.modules.length; i++) {
-      const mod = await findModuleyById(uni.modules[i]);
+    for (i = 0; i < category.modules.length; i++) {
+      const mod = await findModuleyById(category.modules[i]);
       temp.push(mod);
     }
 

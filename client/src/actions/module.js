@@ -147,7 +147,8 @@ export const getFollowedModules = (uniId) => async (dispatch) => {
     const body = JSON.stringify({ uniId });
 
     const res = await axios.get(`/users/modules/`, body, config);
-
+    console.log(res);
+    
     dispatch({
       type: GET_FOLLOWEDMODULES,
       payload: res.data,

@@ -89,7 +89,6 @@ export const login = (email, password) => async (dispatch) => {
     dispatch(loadUser());
     dispatch(getNotifications());
   } catch (err) {
-    // console.log(err.response.data);
     const errors = err.response.data.errors;
 
     if (errors) {
@@ -114,7 +113,6 @@ export const verifyUser = (token) => async (dispatch) => {
   setAuthToken(token);
   try {
     const res = await axios.get(`/users/verify/${token}`);
-    // console.log(res.data);
 
     dispatch({
       type: VERIFY_SUCCESS,
@@ -146,7 +144,6 @@ export const forgotPassword = (email) => async (dispatch) => {
     dispatch(setAlert(`${res.data}`, 'success'));
   } catch (err) {
     const errors = err.response.data.errors;
-    console.log(err.response.data);
 
     if (errors) {
       dispatch(setAlert(errors.msg, 'error'));
@@ -163,15 +160,11 @@ export const resetPassword = (formData, token, history) => async (dispatch) => {
       },
     };
 
-    // console.log(formData);
-
     const res = await axios.put(
       `/users/reset-password/${token}`,
       formData,
       config
     );
-
-    console.log(res.data);
 
     // dispatch(setAlert(`${res.data}`, 'success'));
     history.push('/password-updated');
