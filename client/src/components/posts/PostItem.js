@@ -29,7 +29,7 @@ const PostItem = ({
     upvote,
     downvote,
     comments,
-    uniAcronym,
+    categoryAcronym,
   } = post;
 
   const [avatar, setAvatar] = useState(null);
@@ -64,7 +64,7 @@ const PostItem = ({
             <div className="ui four wide column">
               {/* MODIFY THIS */}
               <Link
-                to={`/${uniAcronym}/${moduleName}`}
+                to={`/${categoryAcronym}/${moduleName}`}
                 style={{ color: 'inherit' }}
               >
                 {`${moduleName}`}
@@ -128,7 +128,7 @@ const PostItem = ({
             <div className="ui labeled small button" tabIndex="0">
               {/* MODIFY THIS */}
               <Link
-                to={`/${uniAcronym}/${moduleName}/${_id}`}
+                to={`/${categoryAcronym}/${moduleName}/${_id}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ui icon small button"

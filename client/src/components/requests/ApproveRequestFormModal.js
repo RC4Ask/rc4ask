@@ -11,58 +11,40 @@ const ApproveRequestFormModal = ({
   addUniModule,
   addModule,
 }) => {
-  const [uni, setUni] = useState(null);
-  const [page, setPage] = useState(1);
+  const [cat, setCat] = useState(null);
   const [formData, setFormData] = useState({
-    university: {
-      name: request.university,
-      acronym: '',
-      overview: '',
-      website: '',
-      logo: '',
+    category: {
+      name: request.category,
     },
     module: {
       name: request.module,
       title: '',
       description: '',
-      university: '',
+      category: '',
+      logo: '',
     },
     request: request._id,
   });
+  
+  const { category, module } = formData;
 
   useEffect(() => {
-    axios.get(`/categories/name/${university.name}`).then(({ data }) => {
+    axios.get(`/categories/name/${category.name}`).then(({ data }) => {
       setFormData({
         ...formData,
-        university: {
-          ...university,
-          acronym: data ? data.acronym : '',
-          overview: data ? data.overview : '',
-          website: data ? data.website : '',
-          logo: data ? data.logo : '',
-        },
         module: {
           ...module,
-          university: data._id,
+          category: data._id,
         },
       });
-      setUni(data ? data : null);
+      setCat(data ? data : null);
     });
   }, []);
 
-  const { university, module } = formData;
-  const onChange = (e) =>
-    setFormData({
-      ...formData,
-      university: {
-        ...university,
-        [e.target.name]: e.target.value,
-      },
-    });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (uni) {
+    if (cat) {
       const newModule = { module: module, request: request._id };
       addModule(newModule, request._id);
       // console.log(newModule);
@@ -76,31 +58,8 @@ const ApproveRequestFormModal = ({
     setFormShowing(false);
   };
 
-  const actions1 = (
+  const actions = (
     <Fragment>
-      <button
-        type="submit"
-        onSubmit={(e) => e.preventDefault()}
-        onClick={() => setPage(2)}
-        className="ui button red-button"
-      >
-        Next
-      </button>
-      <button onClick={closeModalHandler} className="ui button">
-        Cancel
-      </button>
-    </Fragment>
-  );
-
-  const actions2 = (
-    <Fragment>
-      <button
-        onClick={() => setPage(1)}
-        className="ui button"
-        style={{ float: 'left' }}
-      >
-        Previous
-      </button>
       <button type="submit" form="myform" className="ui button red-button">
         Add Module
       </button>
@@ -110,78 +69,29 @@ const ApproveRequestFormModal = ({
     </Fragment>
   );
 
-  const content1 = (
-    <Fragment>
-      <div className="field">
-        <label className="header">University Name</label>
-        <div className="ui input">
-          <input
-            type="text"
-            name="name"
-            placeholder="University Name"
-            value={university.name}
-            onChange={(e) => onChange(e)}
-            required
-          />
-        </div>
-      </div>
-      <div className="field">
-        <label className="header">University Acronym</label>
-        <div className="ui input">
-          <input
-            type="text"
-            name="acronym"
-            placeholder="University Acronym"
-            value={university.acronym}
-            onChange={(e) => onChange(e)}
-            required
-          />
-        </div>
-      </div>
-      <div className="field">
-        <label className="header">Overview</label>
-        <div className="ui input">
-          <textarea
-            type="text"
-            name="overview"
-            placeholder="Overview"
-            value={university.overview}
-            onChange={(e) => onChange(e)}
-            required
-          />
-        </div>
-      </div>
-      <div className="field">
-        <label className="header">Website</label>
-        <div className="ui input">
-          <input
-            type="text"
-            name="website"
-            placeholder="Website"
-            value={university.website}
-            onChange={(e) => onChange(e)}
-            required
-          />
-        </div>
-      </div>
-      <div className="field">
-        <label className="header">Logo</label>
-        <div className="ui input">
-          <input
-            type="text"
-            name="logo"
-            placeholder="Logo URL"
-            value={university.logo}
-            onChange={(e) => onChange(e)}
-            required
-          />
-        </div>
-      </div>
-    </Fragment>
-  );
 
-  const content2 = (
+
+  const content = (
     <Fragment>
+      <div className="field">
+        <label className="header">Category</label>
+        <div className="ui input">
+          <input
+            disabled={true}
+            type="text"
+            name="category"
+            placeholder="Category"
+            value={category.name}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                category: { ...module, name: e.target.value },
+              })
+            }
+            required
+          />
+        </div>
+      </div>
       <div className="field">
         <label className="header">Module Code</label>
         <div className="ui input">
@@ -236,6 +146,24 @@ const ApproveRequestFormModal = ({
           />
         </div>
       </div>
+      <div className="field">
+        <label className="header">Logo</label>
+        <div className="ui input">
+          <input
+            type="text"
+            name="logo"
+            placeholder="Logo URL"
+            value={module.logo}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                module: { ...module, logo: e.target.value },
+              })
+            }
+            required
+          />
+        </div>
+      </div>
     </Fragment>
   );
 
@@ -244,13 +172,13 @@ const ApproveRequestFormModal = ({
       <div>
         <Modal
           onDismiss={closeModalHandler}
-          title={page == 1 ? 'University Details' : 'Module Details'}
+          title={'Module Details'}
           content={
             <form id="myform" className="ui form" onSubmit={(e) => onSubmit(e)}>
-              {page == 1 ? content1 : content2}
+              {content}
             </form>
           }
-          actions={page == 1 ? actions1 : actions2}
+          actions={actions}
         />
       </div>
     </Fragment>

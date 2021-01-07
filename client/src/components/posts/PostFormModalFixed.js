@@ -8,7 +8,7 @@ const PostFormModalFixed = ({
   addPost,
   setShowing,
   auth: { user, loading },
-  module: { name, _id, uniAcronym },
+  module: { name, _id, categoryAcronym },
 }) => {
   const [formData, setFormData] = useState({
     title: '',
@@ -50,7 +50,7 @@ const PostFormModalFixed = ({
       <div className="field">
         <label className="header">Category</label>
         <div className="ui input">
-          {`${uniAcronym}`} - {`${name}`}
+          {`${categoryAcronym}`} - {`${name}`}
         </div>
       </div>
       <div className="field">
