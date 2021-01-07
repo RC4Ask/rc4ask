@@ -1,48 +1,29 @@
-const Category = require('../models/Category')
-const Module = require('../models/Module')
-const User = require('../models/User')
+const Category = require('../models/Category');
+const Module = require('../models/Module');
 
-const notif = require('../middleware/notification')
 const {
   handleError,
   handleSuccess,
   buildErrObject,
-  buildSuccObject
+  buildSuccObject,
 } = require('../middleware/utils');
 
 /*********************
  * Private functions *
  *********************/
 
- /* Finds request by id*/
-const findRequestById = async (id) => {
+/* Finds category by name  */
+const findCategoryByName = async (name) => {
   return new Promise((resolve, reject) => {
-    Request.findOne({ _id: id })
-      .select('_id category module counter')
-      .then(request => {
-        if (!request) {
-          reject(buildErrObject(422, 'Request does not exist'));
+    Category.findOne({ acronym: name })
+      .then((category) => {
+        if (!category) {
+          reject(buildErrObject(422, 'Category does not exist'));
         } else {
-          resolve(request); // returns mongoose object
+          resolve(category); // returns mongoose object
         }
       })
-      .catch(err => reject(buildErrObject(422, err.message)));
-  });
-};
-
-/* Finds user by id  */
-const findUserById = async id => {
-  return new Promise((resolve, reject) => {
-    User.findOne({ _id: id })
-      .select('name email role verified _id following avatar notifications')
-      .then(user => {
-        if (!user) {
-          reject(buildErrObject(422, 'User does not exist'));
-        } else {
-          resolve(user); // returns mongoose object
-        }
-      })
-      .catch(err => reject(buildErrObject(422, err.message)));
+      .catch((err) => reject(buildErrObject(422, err.message)));
   });
 };
 
@@ -50,51 +31,129 @@ const findUserById = async id => {
  * Public functions *
  ********************/
 
-exports.getUniversityList = async (req, res) => {
-  Category.find()
-    .select('name modules acronym').sort({name: 1})
+exports.getCategoryInfoAcronym = async (req, res) => {
+  Category.findOne({ acronym: req.params.categoryAcronym })
     .lean()
-    .then(universityList => handleSuccess(res, buildSuccObject(universityList)))
-    .catch(err => handleError(res, buildErrObject(422, err.message)));
+    .then((category) => {
+      if (category) handleSuccess(res, buildSuccObject(category));
+      else handleError(res, buildErrObject(422, 'Category not found'));
+    })
+    .catch((err) => handleError(res, buildErrObject(422, err.message)));
 };
 
-exports.createUniAndModule = async (req, res) => {
+exports.getCategoryInfoName = async (req, res) => {
+  Category.findOne({ name: req.params.categoryName })
+    .lean()
+    .then((category) => {
+      if (category) handleSuccess(res, buildSuccObject(category));
+      else handleError(res, buildErrObject(422, 'Category not found'));
+    })
+    .catch((err) => handleError(res, buildErrObject(422, err.message)));
+};
+
+exports.getModuleList = async (req, res) => {
   try {
-    const request = await findRequestById(req.body.request)
-    const admin = req.body._id
-
-    var newUni = new Category({
-      name: req.body.category.name,
-      acronym: req.body.category.acronym,
-      overview: req.body.category.overview,
-      website: req.body.category.website,
-      logo: req.body.category.logo,
-    });
-
-    var newModule = new Module({
-      name: req.body.module.name,
-      title: req.body.module.title,
-      description: req.body.module.description,
-      category: newUni._id,
-      nOfFollowers: 0
-    });
-    
-    const data = {
-      type: 'request',
-      action: newModule._id
-    }
-
-    for (const element of request.counter) {
-      const user = await findUserById(element) 
-      notif.createNotification(data, user, admin)
-    }
-
-    newModule.categoryAcronym = newUni.acronym
-    newUni.modules.push(newModule._id)
-    newUni.save()
-    newModule.save()
-    handleSuccess(res, buildSuccObject('Category and Module created'))
+    const category = await findCategoryByName(req.params.categoryName);
+    Module.find({ category: category._id })
+      .select(
+        '_id name title description posts followers category categoryAcronym'
+      )
+      .sort({ name: 1 })
+      .lean()
+      .then((moduleList) => {
+        handleSuccess(res, buildSuccObject(moduleList));
+      })
+      .catch((err) => handleError(res, buildErrObject(422, err.message)));
   } catch (err) {
     handleError(res, buildErrObject(422, err.message));
   }
-}
+};
+
+exports.createCategory = async (req, res) => {
+  var newCategory = new Category({
+    name: req.body.name,
+    acronym: req.body.acronym,
+    overview: req.body.overview,
+    website: req.body.website,
+    logo: req.body.logo,
+  });
+
+  newCategory
+    .save()
+    .then((category) =>
+      handleSuccess(res, buildSuccObject('New category created'))
+    )
+    .catch((error) => handleError(res, buildErrObject(422, error.message)));
+};
+
+exports.deleteCategory = async (req, res) => {
+  Category.deleteOne({ _id: req.body.categoryId })
+    .then((result) => {
+      if (result.n) handleSuccess(res, buildSuccObject('Category deleted'));
+      else handleError(res, buildErrObject(422, 'Category not found'));
+    })
+    .catch((error) => handleError(res, buildErrObject(422, error.message)));
+};
+
+exports.updateCategory = async (req, res) => {
+  Category.updateOne({ _id: req.params.categoryId }, req.body.category)
+    .then((result) => {
+      if (result.n) {
+        if (result.nModified)
+          handleSuccess(res, buildSuccObject('Category updated'));
+        else handleError(res, buildErrObject(422, 'No changes made'));
+      } else handleError(res, buildErrObject(422, 'Category not found'));
+    })
+    .catch((error) => handleError(res, buildErrObject(422, error.message)));
+};
+
+exports.addModule = async (req, res) => {
+  try {
+    const category = await findCategoryByName(req.params.categoryName);
+    const moduleId = req.body.moduleId;
+    if (!category) {
+      handleError(res, buildErrObject(409, 'Category not found'));
+      return;
+    }
+
+    if (category.modules.indexOf(moduleId) === -1) {
+      category.modules.push(moduleId);
+    } else {
+      handleError(res, buildErrObject(422, 'Module already exists'));
+      return;
+    }
+
+    category.save();
+    handleSuccess(res, buildSuccObject('Module added to ' + category.name));
+  } catch (err) {
+    handleError(res, buildErrObject(422, err.message));
+  }
+};
+
+exports.deleteModule = async (req, res) => {
+  try {
+    const category = await findCategoryByName(req.params.categoryName);
+    const moduleId = req.body.moduleId;
+    const category_idx = category.modules.indexOf(moduleId);
+    if (category_idx > -1) {
+      const temp = [];
+      category.modules.forEach((element) => {
+        if (element != moduleId) {
+          temp.push(element);
+        }
+      });
+      category.modules = temp;
+    } else {
+      handleError(
+        res,
+        buildErrObject(422, 'Module does not belong to ' + category.name)
+      );
+      return;
+    }
+
+    category.save();
+    handleSuccess(res, buildSuccObject('Module removed from ' + category.name));
+  } catch (err) {
+    handleError(res, buildErrObject(422, err.message));
+  }
+};
