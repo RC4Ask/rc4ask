@@ -43,7 +43,7 @@ const EditPostFormModal = ({ updatePost, setShowing, post }) => {
       <div className="field">
         <label className="header">Category</label>
         <div className="ui input">
-          {`${post.uniAcronym}`} - {`${post.moduleName}`}
+          {`${post.categoryAcronym}`} - {`${post.moduleName}`}
         </div>
       </div>
       <div className="field">
