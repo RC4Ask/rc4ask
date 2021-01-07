@@ -37,7 +37,7 @@ const NotificationsDropdownItem = ({ notification, markAsRead }) => {
           to={
             type === 'request'
               ? `/${data.acronym}/${data.name}`
-              : `/${data.uniAcronym}/${data.moduleName}/${action}`
+              : `/${data.categoryAcronym}/${data.moduleName}/${action}`
           }
           onClick={() => markAsRead(_id)}
         >
