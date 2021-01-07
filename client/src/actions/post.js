@@ -287,10 +287,8 @@ export const deleteComment = (postId, commentId) => async (dispatch) => {
 // Get post by user
 export const getPostsByUser = (id) => async (dispatch) => {
   try {
-    // console.log(id);
     const res = await axios.get(`/users/posts/${id}`);
 
-    // console.log(res.data);
     dispatch({
       type: GET_POSTS_BY_USER,
       payload: res.data,

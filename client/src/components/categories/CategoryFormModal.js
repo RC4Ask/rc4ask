@@ -19,7 +19,7 @@ const CategoryFormModal = ({ setShowing, addRequest }) => {
     category: '',
     module: '',
   });
-  const { university, module } = formData;
+  const { category, module } = formData;
 
   const closeModalHandler = () => {
     setShowing(false);

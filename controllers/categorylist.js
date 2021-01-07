@@ -55,7 +55,7 @@ exports.getCategoryList = async (req, res) => {
   Category.find()
     .select('name modules acronym').sort({name: 1})
     .lean()
-    .then(universityList => handleSuccess(res, buildSuccObject(universityList)))
+    .then(categoryList => handleSuccess(res, buildSuccObject(categoryList)))
     .catch(err => handleError(res, buildErrObject(422, err.message)));
 };
 

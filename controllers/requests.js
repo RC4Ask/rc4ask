@@ -29,9 +29,9 @@ const findRequestById = async (id) => {
 };
 
 /* Finds request by category and module*/
-const findRequestByUniAndMod = async (uni, mod) => {
+const findRequestByUniAndMod = async (category, mod) => {
   return new Promise((resolve, reject) => {
-    Request.findOne({ category: uni, module: mod })
+    Request.findOne({ category: category, module: mod })
       .select('_id category module counter')
       .then(request => {
         resolve(request)
@@ -71,10 +71,10 @@ const sortedRequest = async () => {
 
 exports.createRequest = async (req, res) => {
    try {
-    const uni = req.body.category
+    const category = req.body.category
     const mod = req.body.module
     const userId = req.body._id
-    const existingRequest = await findRequestByUniAndMod(uni, mod)
+    const existingRequest = await findRequestByUniAndMod(category, mod)
     if (existingRequest) {
       if (existingRequest.counter.indexOf(userId) > -1) {
         handleError(res, buildErrObject(422, "User already made this request"));
@@ -86,7 +86,7 @@ exports.createRequest = async (req, res) => {
       }
     } else {
       var newRequest = new Request({
-        category: uni,
+        category: category,
         module: mod,
         date: Date.now()
       })
