@@ -50,7 +50,7 @@ export const getModulesRecommendations = () => async (dispatch) => {
 // Get all modules in university
 export const getModulesInUniversity = (acronym) => async (dispatch) => {
   try {
-    const res = await axios.get(`/universities/modules/${acronym}`);
+    const res = await axios.get(`/categories/modules/${acronym}`);
 
     dispatch({
       type: GET_MODULES_IN_UNIVERSITY,
@@ -85,7 +85,7 @@ export const getModule = (id) => async (dispatch) => {
 export const getModuleByName = (uniName, moduleName) => async (dispatch) => {
   try {
     const res = await axios.get(
-      `/universities/modules/${uniName}/${moduleName}`
+      `/categories/modules/${uniName}/${moduleName}`
     );
     dispatch({
       type: GET_MODULE,
@@ -169,7 +169,7 @@ export const addUniModule = (formData, id) => async (dispatch) => {
       },
     };
 
-    const res = await axios.post(`/categories/create`, formData, config);
+    const res = await axios.post(`/categorylist/create`, formData, config);
     dispatch(setAlert(res.data, 'success'));
     dispatch(deleteRequest(id, true));
   } catch (err) {

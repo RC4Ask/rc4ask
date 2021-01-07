@@ -31,7 +31,7 @@ const ApproveRequestFormModal = ({
   });
 
   useEffect(() => {
-    axios.get(`/universities/name/${university.name}`).then(({ data }) => {
+    axios.get(`/categories/name/${university.name}`).then(({ data }) => {
       setFormData({
         ...formData,
         university: {
