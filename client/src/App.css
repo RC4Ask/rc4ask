@@ -1,10 +1,26 @@
+/*Alert*/
+#alert {
+  width: 50vw;
+  /* top: 10%; */
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+  transition-timing-function: ease-in-out;
+  z-index: 10;
+}
+
 /* Navbar */
 .navbar {
   position: fixed;
   z-index: 1;
   width: 100%;
   top: 0;
+  /* background-color: transparent; */
   /* opacity: 0.95; */
+}
+
+#navbar-transparent {
+  background-color: transparent;
 }
 
 /* Utilities */
@@ -136,6 +152,42 @@
   height: 100%;
 }
 
+/* Login Page */
+#login-segment {
+  border: none;
+  box-shadow: none;
+  border-radius: 25px;
+  padding: 25px;
+}
+
+#login-segment input {
+  border-radius: 25px;
+}
+
+#login-bottom {
+  border: none;
+  box-shadow: none;
+  border-radius: 25px;
+}
+
+/* Register Page */
+#register-segment {
+  border: none;
+  box-shadow: none;
+  border-radius: 25px;
+  padding: 25px;
+}
+
+#register-segment input {
+  border-radius: 25px;
+}
+
+#register-bottom {
+  border: none;
+  box-shadow: none;
+  border-radius: 25px;
+}
+
 /* Theme Color */
 
 .label.red-label {
@@ -148,8 +200,13 @@
   color: white;
 }
 
+.ui.button {
+  border-radius: 25px;
+}
+
 .button.red-button {
   background-color: #00a8a8;
+  border-radius: 25px;
   color: white;
 }
 
@@ -316,13 +373,12 @@ input[type='range']::-webkit-slider-thumb {
 
 /* Form */
 .form-center {
-  /* color: #00A8A8; */
-  height: 100%;
+  top: 50%;
+  left: 50%;
   width: 60%;
-  margin: auto;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  max-width: 600px;
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 
 .vertical-center {

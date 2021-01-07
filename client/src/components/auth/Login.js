@@ -49,11 +49,11 @@ const Login = ({ login, auth }) => {
           <div className="form-center">
             <h1 className="large white-text center-text">Welcome back!</h1>
             <form className="ui form" onSubmit={onSubmit}>
-              <div className="ui raised segment">
+              <div className="ui segment" id="login-segment">
                 <h3 className="ui dividing header"> Login to Your Account</h3>
                 <div className="field">
                   <label className="header">Email</label>
-                  <div className="ui left icon input">
+                  <div className="ui left icon input" >
                     <i className="envelope icon"></i>
                     <input
                       type="text"
@@ -89,7 +89,7 @@ const Login = ({ login, auth }) => {
                   </div>
                 </button>
               </div>
-              <div className="ui bottom attached message center-mobile">
+              <div className="ui bottom attached message center-mobile" id="login-bottom">
                 New to us? <Link to="/register">Register</Link>
                 <Link
                   className="float-mobile"

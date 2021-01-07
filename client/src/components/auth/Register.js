@@ -55,7 +55,7 @@ const Register = ({ setAlert, register, auth }) => {
         <div className="form-center">
           <h1 className="large white-text center-text">Get Started!</h1>
           <form className="ui form" onSubmit={(e) => onSubmit(e)}>
-            <div className="ui raised segment">
+            <div className="ui segment" id="register-segment">
               <h3 className="ui dividing header"> Create an Account</h3>
               <div className="field">
                 <label className="header">Name</label>
@@ -128,7 +128,7 @@ const Register = ({ setAlert, register, auth }) => {
                 </div>
               </button>
             </div>
-            <div className="ui message">
+            <div className="ui message" id="register-bottom">
               Already have an account? <Link to="/login">Log In</Link>
             </div>
           </form>
