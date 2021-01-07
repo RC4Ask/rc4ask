@@ -136,7 +136,7 @@ export const unfollowModule = (id, name) => async (dispatch) => {
 };
 
 // Get followed modules
-export const getFollowedModules = (uniId) => async (dispatch) => {
+export const getFollowedModules = () => async (dispatch) => {
   try {
     const config = {
       headers: {
@@ -144,9 +144,7 @@ export const getFollowedModules = (uniId) => async (dispatch) => {
       },
     };
 
-    const body = JSON.stringify({ uniId });
-
-    const res = await axios.get(`/users/modules/`, body, config);
+    const res = await axios.get(`/users/modules/`, config);
 
     dispatch({
       type: GET_FOLLOWEDMODULES,
