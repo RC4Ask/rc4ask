@@ -10,7 +10,7 @@ import {
 // Get all universities
 export const getUniversities = () => async (dispatch) => {
   try {
-    const res = await axios.get('/categories');
+    const res = await axios.get('/categorylist');
     dispatch({
       type: GET_UNIVERSITIES,
       payload: res.data,
@@ -29,7 +29,7 @@ export const getUniversities = () => async (dispatch) => {
 // Get university from acronym
 export const getUniversity = (acronym) => async (dispatch) => {
   try {
-    const res = await axios.get(`/universities/${acronym}`);
+    const res = await axios.get(`/categories/${acronym}`);
     dispatch({
       type: GET_UNIVERSITY,
       payload: res.data,
@@ -48,7 +48,7 @@ export const getUniversity = (acronym) => async (dispatch) => {
 // Get university from name
 export const getUniversityFromName = (name) => async (dispatch) => {
   try {
-    const res = await axios.get(`/universities/name/${name}`);
+    const res = await axios.get(`/categories/name/${name}`);
     dispatch({
       type: GET_UNIVERSITY,
       payload: res.data,
