@@ -15,7 +15,7 @@
     "frappe-gantt": "^0.5.0",
     "lodash": "^4.17.15",
     "moment": "^2.27.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-alice-carousel": "^1.19.3",
     "react-avatar-editor": "^11.0.9",
